@@ -1,5 +1,1 @@
-import Link from "next/link";
-
-export default function Page() {
-  return <main className="min-h-screen bg-slate-50 px-5 py-16"><div className="mx-auto max-w-4xl rounded-3xl bg-white p-10 shadow-sm"><Link href="/" className="font-bold text-indigo-600">← Home</Link><h1 className="mt-8 text-4xl font-black">Admin</h1><p className="mt-4 text-slate-600">This MVP section is ready for the next content/database build stage.</p></div></main>;
-}
+import SiteHeader from '@/components/SiteHeader';export default function Admin(){return <><SiteHeader/><main className="mx-auto max-w-5xl px-5 py-16"><p className="font-bold text-indigo-600">ADMIN</p><h1 className="mt-1 text-4xl font-black">Content management</h1><p className="mt-4 text-slate-500">The Supabase schema supports stories, lessons, activities, experiments, quizzes, translations, magazine issues, categories and tags.</p><div className="mt-8 rounded-3xl border border-amber-200 bg-amber-50 p-7 text-amber-900"><b>Important:</b> protect admin mutations with server-side authentication and role checks before enabling editing in production.</div></main></>}

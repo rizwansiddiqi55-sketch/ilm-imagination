@@ -1,5 +1,1 @@
-import Link from "next/link";
-
-export default function Page() {
-  return <main className="min-h-screen bg-slate-50 px-5 py-16"><div className="mx-auto max-w-4xl rounded-3xl bg-white p-10 shadow-sm"><Link href="/" className="font-bold text-indigo-600">← Home</Link><h1 className="mt-8 text-4xl font-black">Activities</h1><p className="mt-4 text-slate-600">This MVP section is ready for the next content/database build stage.</p></div></main>;
-}
+import SiteHeader from '@/components/SiteHeader';import ContentGrid from '@/components/ContentGrid';export default function Activities(){return <><SiteHeader/><main className="mx-auto max-w-7xl px-5 py-16"><p className="font-bold text-indigo-600">🧠 ACTIVITIES</p><h1 className="mt-1 text-4xl font-black">Think, make and test</h1><p className="mt-4 text-slate-500">Hands-on activities turn ideas into discoveries.</p><div className="mt-10"><ContentGrid type="activity" limit={20}/></div></main></>}
