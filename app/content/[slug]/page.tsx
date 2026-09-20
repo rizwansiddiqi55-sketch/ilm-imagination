@@ -35,7 +35,7 @@ export default function ContentPage() {
         .eq('published', true)
         .single();
       if (error) setError(error.message);
-      else setRow(data as ContentRow);
+      else setRow(data as unknown as ContentRow);
     }
     load();
   }, [slug]);
