@@ -12,7 +12,59 @@ export type ContentRow = {
     | { learning_objectives: string[] | null; key_points: string[] | null }
     | { learning_objectives: string[] | null; key_points: string[] | null }[]
     | null;
+  quizzes?: QuizRow | QuizRow[] | null;
+  activities?: ActivityRow | ActivityRow[] | null;
+  experiments?: ExperimentRow | ExperimentRow[] | null;
 };
+
+export type QuizAnswer = { id: string; answer_order: number; answer_en: string; answer_ur: string | null; is_correct: boolean };
+export type QuizQuestion = {
+  id: string; question_order: number; question_en: string; question_ur: string | null;
+  explanation_en: string | null; explanation_ur: string | null; quiz_answers: QuizAnswer[];
+};
+export type QuizRow = { id: string; passing_score: number; quiz_questions: QuizQuestion[] };
+export type ActivityRow = { instructions: unknown; materials: unknown; safety_notes: unknown };
+export type ExperimentRow = { materials: unknown; steps: unknown; safety_notes: unknown; observation_questions: unknown };
+
+// The embedded one-to-one tables can come back as an object or a one-item array.
+function one<T>(v: T | T[] | null | undefined): T | null {
+  if (!v) return null;
+  return Array.isArray(v) ? (v[0] ?? null) : v;
+}
+
+// jsonb list columns should be arrays of strings, but tolerate {text|en} objects.
+export function strList(v: unknown): string[] {
+  if (!Array.isArray(v)) return [];
+  return v
+    .map((i) => (typeof i === 'string' ? i : (i as any)?.text ?? (i as any)?.en ?? ''))
+    .filter((i): i is string => typeof i === 'string' && i.trim().length > 0);
+}
+
+export function quizOf(row: ContentRow): QuizRow | null {
+  const q = one(row.quizzes);
+  if (!q) return null;
+  const questions = [...(q.quiz_questions ?? [])]
+    .sort((a, b) => a.question_order - b.question_order)
+    .map((qq) => ({ ...qq, quiz_answers: [...(qq.quiz_answers ?? [])].sort((a, b) => a.answer_order - b.answer_order) }));
+  return { ...q, quiz_questions: questions };
+}
+
+export function activityOf(row: ContentRow) {
+  const a = one(row.activities);
+  if (!a) return null;
+  const out = { instructions: strList(a.instructions), materials: strList(a.materials), safety: strList(a.safety_notes) };
+  return out.instructions.length || out.materials.length || out.safety.length ? out : null;
+}
+
+export function experimentOf(row: ContentRow) {
+  const e = one(row.experiments);
+  if (!e) return null;
+  const out = {
+    materials: strList(e.materials), steps: strList(e.steps),
+    safety: strList(e.safety_notes), questions: strList(e.observation_questions),
+  };
+  return out.materials.length || out.steps.length || out.safety.length || out.questions.length ? out : null;
+}
 
 export function translated(row: ContentRow, language: Language = 'en') {
   const list = row.content_translations ?? [];
