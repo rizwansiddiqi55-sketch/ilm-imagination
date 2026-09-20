@@ -6,9 +6,9 @@ export const dynamic = 'force-dynamic';
 // Any OpenAI-compatible provider works. Defaults to Groq.
 //   AI_API_KEY   (or GROQ_API_KEY)  required
 //   AI_BASE_URL  default https://api.groq.com/openai/v1
-//   AI_MODEL     default llama-3.3-70b-versatile
+//   AI_MODEL     default openai/gpt-oss-120b
 const BASE_URL = (process.env.AI_BASE_URL || 'https://api.groq.com/openai/v1').replace(/\/$/, '');
-const MODEL = process.env.AI_MODEL || 'llama-3.3-70b-versatile';
+const MODEL = process.env.AI_MODEL || 'openai/gpt-oss-120b';
 
 const SYSTEM_PROMPT = `You are Ilm, a warm, encouraging learning assistant inside "Ilm & Imagination", a bilingual (English/Urdu) learning magazine for students aged 10-16.
 
@@ -80,7 +80,9 @@ export async function POST(req: Request) {
       body: JSON.stringify({
         model: MODEL,
         temperature: 0.4,
-        max_tokens: 600,
+        // Reasoning models (e.g. gpt-oss) spend part of this budget on thinking, so keep it generous.
+        max_tokens: 2000,
+        ...(MODEL.includes('gpt-oss') ? { reasoning_effort: 'low' } : {}),
         messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
       }),
       signal: controller.signal,
