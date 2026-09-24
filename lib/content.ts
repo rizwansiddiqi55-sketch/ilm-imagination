@@ -3,7 +3,7 @@ export type Language = 'en' | 'ur';
 export type ContentRow = {
   id: string; slug: string; content_type: string; difficulty: string | null;
   age_min: number | null; age_max: number | null; estimated_minutes: number | null;
-  featured: boolean; subject_id: string | null;
+  featured: boolean; subject_id: string | null; icon?: string | null;
   subjects?: { slug: string; name: string; icon: string | null } | null;
   content_translations?: { language: string; title: string; summary: string | null; body: string | null }[];
   // Supabase returns an object for a to-one embed (unique FK) on newer clients,

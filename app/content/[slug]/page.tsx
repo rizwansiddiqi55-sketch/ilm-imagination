@@ -30,6 +30,7 @@ export default function ContentPage() {
           'id,slug,content_type,difficulty,age_min,age_max,estimated_minutes,featured,subject_id,' +
           'subjects(slug,name,icon),' +
           'content_translations(language,title,summary,body),' +
+          'icon,' +
           'lessons(learning_objectives,key_points),' +
           'quizzes(id,passing_score,quiz_questions(id,question_order,question_en,question_ur,explanation_en,explanation_ur,' +
           'quiz_answers(id,answer_order,answer_en,answer_ur,is_correct))),' +
@@ -65,7 +66,7 @@ export default function ContentPage() {
         {row && t && (
           <article>
             <div className="rounded-[2rem] bg-slate-950 p-8 text-white md:p-12">
-              <span className="text-5xl">{row.subjects?.icon ?? '✨'}</span>
+              <span className="text-5xl">{row.icon ?? row.subjects?.icon ?? '✨'}</span>
               <div className="mt-6 flex flex-wrap gap-2 text-xs font-bold">
                 <span className="rounded-full bg-white/10 px-3 py-1 capitalize">{row.content_type}</span>
                 <span className="rounded-full bg-white/10 px-3 py-1">{row.difficulty ?? 'beginner'}</span>
