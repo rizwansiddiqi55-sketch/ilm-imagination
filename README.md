@@ -24,4 +24,4 @@ The app intentionally uses only the public browser-safe Supabase key. Never expo
 Upload/replace the project in GitHub and let Vercel deploy the `main` branch. The existing Supabase schema and seed data can remain in the `supabase/` directory.
 
 ## Important
-The Ask Ilm UI is intentionally not connected to an AI provider yet. AI calls should go through a server-side route/action so an AI API key is never exposed to the browser.
+Ask Ilm calls a server-side route (`app/api/ask-ilm`) so the AI key is never exposed to the browser. Set `AI_API_KEY` (a Groq key by default) in Vercel → Settings → Environment Variables, then redeploy.
