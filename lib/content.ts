@@ -66,6 +66,30 @@ export function experimentOf(row: ContentRow) {
   return out.materials.length || out.steps.length || out.safety.length || out.questions.length ? out : null;
 }
 
+export type MagazineArticleRow = { article_order: number; content: ContentRow | null };
+export type MagazineIssueRow = {
+  id: string; issue_number: number; slug: string; cover_image_url: string | null;
+  published_date: string | null; published: boolean;
+  title_en: string | null; title_ur: string | null; summary_en: string | null; summary_ur: string | null;
+  magazine_articles?: MagazineArticleRow[];
+};
+
+export function issueTitle(issue: MagazineIssueRow, lang: Language = 'en') {
+  const byLang = lang === 'ur' ? issue.title_ur : issue.title_en;
+  return byLang ?? issue.title_en ?? `Issue ${issue.issue_number}`;
+}
+
+export function issueSummary(issue: MagazineIssueRow, lang: Language = 'en') {
+  return (lang === 'ur' ? issue.summary_ur : issue.summary_en) ?? issue.summary_en ?? '';
+}
+
+export function issueArticles(issue: MagazineIssueRow): ContentRow[] {
+  return [...(issue.magazine_articles ?? [])]
+    .sort((a, b) => a.article_order - b.article_order)
+    .map((a) => a.content)
+    .filter((c): c is ContentRow => !!c);
+}
+
 export function translated(row: ContentRow, language: Language = 'en') {
   const list = row.content_translations ?? [];
   return list.find(t => t.language === language) ?? list.find(t => t.language === 'en') ?? list[0] ?? {title: row.slug, summary: '', body: ''};
