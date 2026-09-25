@@ -21,6 +21,7 @@ const columns: { title: string; links: [string, string][] }[] = [
       ['Chemistry', '/chemistry'],
       ['Computer Science', '/computer-science'],
       ['Sports', '/sports'],
+      ['Artificial Intelligence', '/ai'],
     ],
   },
   {
