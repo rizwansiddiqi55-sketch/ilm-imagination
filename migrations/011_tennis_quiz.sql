@@ -1,6 +1,14 @@
 -- Run once in Supabase → SQL Editor (after 004_sports_subject.sql and 005_tennis_lesson.sql). Safe to run again.
 -- Adds a new "Tennis Quiz: Rules and Scoring" quiz under Sports, with 6 bilingual multiple-choice questions
 -- based on migrations/005_tennis_lesson.sql, so it appears automatically on /quizzes.
+
+-- If a previous "impersonate a user" / "run as" session is still active in this SQL Editor tab
+-- (e.g. left over from testing the admin RLS policy), it makes every insert here fail with
+-- "new row violates row-level security policy" because content/subjects only have a public
+-- SELECT policy. This line clears that impersonation back to the SQL Editor's real (privileged)
+-- role before anything else runs, so the migration works regardless of that leftover UI state.
+reset role;
+
 do $$
 declare
   v_subject uuid;
