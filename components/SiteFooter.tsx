@@ -29,6 +29,7 @@ const columns: { title: string; links: [string, string][] }[] = [
     links: [
       ['Daily Challenge', '/daily-challenge'],
       ['Ask Ilm', '/ask-ilm'],
+      ['Yoga Coach', '/yoga'],
       ['Badges', '/badges'],
       ['For Parents', '/parent'],
       ['Privacy & Safety', '/privacy'],
